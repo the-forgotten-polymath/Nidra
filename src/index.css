@@ -67,7 +67,7 @@ input, textarea, select {
 }
 
 html, body {
-  background-color: var(--color-bg);
+  background: linear-gradient(180deg, #043CA0 0%, #004CC1 25%, #2778F5 50%, #B9D0FE 75%, #FFFFFF 96%) fixed;
   font-family: var(--font-primary);
   color: var(--color-text-dark);
   min-height: 100vh;
@@ -87,7 +87,7 @@ html, body {
   width: 100%;
 }
 
-/* App Outer Wrapper */
+/* App Outer Wrapper - Always Gradient Background */
 .app-viewport-wrapper {
   display: flex;
   justify-content: center;
@@ -95,13 +95,8 @@ html, body {
   min-height: 100vh;
   min-height: 100dvh;
   width: 100%;
-  background-color: var(--color-bg);
+  background: linear-gradient(180deg, #043CA0 0%, #004CC1 25%, #2778F5 50%, #B9D0FE 75%, #FFFFFF 96%) fixed;
   transition: background 0.3s ease;
-}
-
-/* Seamless Full-Screen Welcome Gradient */
-.app-viewport-wrapper.welcome-mode {
-  background: linear-gradient(180deg, #043CA0 0%, #004CC1 25%, #2778F5 50%, #B9D0FE 75%, #FFFFFF 96%);
 }
 
 .app-viewport-wrapper.welcome-mode .mobile-app-container {
@@ -125,7 +120,7 @@ html, body {
 
 @media (max-width: 480px) {
   .app-viewport-wrapper {
-    background-color: var(--color-bg);
+    background: linear-gradient(180deg, #043CA0 0%, #004CC1 25%, #2778F5 50%, #B9D0FE 75%, #FFFFFF 96%) fixed;
   }
   .mobile-app-container {
     max-width: 100%;
