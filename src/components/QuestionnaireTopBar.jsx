@@ -1,12 +1,10 @@
 import React from 'react';
-import { ChevronLeft, Globe } from 'lucide-react';
+import { ChevronLeft } from 'lucide-react';
 import { SCREENS } from '../store/intakeStore';
 
 export default function QuestionnaireTopBar({
   currentScreenId,
-  onBack,
-  language = 'en',
-  onToggleLanguage
+  onBack
 }) {
   const currentScreenIndex = SCREENS.findIndex(s => s.id === currentScreenId);
   const currentScreen = SCREENS[currentScreenIndex] || SCREENS[0];
@@ -59,38 +57,13 @@ export default function QuestionnaireTopBar({
           <ChevronLeft size={20} strokeWidth={2.5} />
         </button>
 
-        {/* Right Side: Section Badge + Language Toggle */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div className="category-badge-pill">
-            <span
-              className="badge-dot"
-              style={{ backgroundColor: getDotColor(currentScreen.id) }}
-            />
-            <span>{currentScreen.sectionTitle}</span>
-          </div>
-
-          <button
-            type="button"
-            onClick={onToggleLanguage}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-              padding: '5px 10px',
-              borderRadius: 20,
-              background: '#FFFFFF',
-              border: '1.5px solid #043CA0',
-              color: '#043CA0',
-              fontSize: 11,
-              fontWeight: 800,
-              cursor: 'pointer',
-              boxShadow: 'var(--shadow-sm)'
-            }}
-            aria-label="Toggle Language"
-          >
-            <Globe size={14} strokeWidth={2.5} />
-            <span>{language === 'en' ? 'English' : 'हिंदी'}</span>
-          </button>
+        {/* Right Side: Section Badge */}
+        <div className="category-badge-pill">
+          <span
+            className="badge-dot"
+            style={{ backgroundColor: getDotColor(currentScreen.id) }}
+          />
+          <span>{currentScreen.sectionTitle}</span>
         </div>
       </div>
 

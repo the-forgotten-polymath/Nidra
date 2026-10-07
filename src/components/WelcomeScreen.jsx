@@ -98,18 +98,10 @@ export default function WelcomeScreen({ onStart }) {
           }}
         />
 
-        <div className="hold-button-content">
-          <div className="hold-icon-wrap">
-            <ArrowRight size={22} strokeWidth={3} className={isHolding ? 'hold-pulse-icon' : ''} />
-          </div>
+        <div className="hold-button-content" style={{ justifyContent: 'center' }}>
           <span className="hold-label-text">
             {isHolding ? 'Hold to Begin...' : 'Hold to Start'}
           </span>
-          <div className="hold-chevrons">
-            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
-            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
-            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline' }} />
-          </div>
         </div>
       </div>
 

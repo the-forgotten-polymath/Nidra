@@ -14,14 +14,15 @@ export default function Screen26AssessmentResults({
   onBack,
   onNavigateToScreen
 }) {
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
+  const [isHolding, setIsHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [editingSection, setEditingSection] = useState(null); // 'personal' | 'sleep' | 'breathing' | 'body' | 'lifestyle' | null
   
-  const trackRef = useRef(null);
-  const startXRef = useRef(0);
-  const currentOffsetRef = useRef(0);
+  const holdTimerRef = useRef(null);
+  const animFrameRef = useRef(null);
+  const holdStartTimeRef = useRef(0);
+  const HOLD_DURATION_MS = 1000; // Hold 1 sec to submit
 
   // Hypertension Flag: Systolic > 140 AND Diastolic > 90 AND History of Hypertension
   const isHypertensive = React.useMemo(() => {
@@ -33,67 +34,48 @@ export default function Screen26AssessmentResults({
     return sys > 140 && dia > 90 && Boolean(hasHistory);
   }, [store.bpSystolic, store.bpDiastolic, store.diagnosedConditions]);
 
-  // Pointer event drag slider matching WelcomeScreen exactly
-  const handlePointerDown = (e) => {
-    e.preventDefault();
-    const track = trackRef.current;
-    if (!track || isSubmitted) return;
-    
-    try {
-      e.target.setPointerCapture(e.pointerId);
-    } catch (err) {
-      // ignore
+  const triggerSubmit = () => {
+    setIsSubmitted(true);
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([60, 40, 80]);
     }
+    setTimeout(() => {
+      onContinue();
+    }, 200);
+  };
 
-    const startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    startXRef.current = startX;
-    currentOffsetRef.current = 0;
-    setIsDragging(true);
+  const startHold = (e) => {
+    if (e.cancelable) e.preventDefault();
+    if (isSubmitted) return;
+    setIsHolding(true);
+    holdStartTimeRef.current = Date.now();
 
-    const maxDrag = Math.max(100, track.offsetWidth - 60);
+    const updateProgress = () => {
+      const elapsed = Date.now() - holdStartTimeRef.current;
+      const progress = Math.min(100, (elapsed / HOLD_DURATION_MS) * 100);
+      setHoldProgress(progress);
 
-    const onPointerMove = (moveEvt) => {
-      const currentX = moveEvt.clientX || (moveEvt.touches && moveEvt.touches[0].clientX) || 0;
-      const diff = currentX - startXRef.current;
-      const clamped = Math.max(0, Math.min(maxDrag, diff));
-      currentOffsetRef.current = clamped;
-      setDragOffset(clamped);
-    };
-
-    const onPointerUp = () => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('pointercancel', onPointerUp);
-      window.removeEventListener('touchmove', onPointerMove);
-      window.removeEventListener('touchend', onPointerUp);
-      
-      setIsDragging(false);
-
-      if (currentOffsetRef.current >= maxDrag * 0.70) {
-        setDragOffset(maxDrag);
-        setIsSubmitted(true);
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-          navigator.vibrate(50);
-        }
-        setTimeout(() => {
-          onContinue();
-        }, 250);
+      if (progress < 100) {
+        animFrameRef.current = requestAnimationFrame(updateProgress);
       } else {
-        setDragOffset(0);
-        currentOffsetRef.current = 0;
+        triggerSubmit();
       }
     };
 
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('pointercancel', onPointerUp);
-    window.addEventListener('touchmove', onPointerMove, { passive: false });
-    window.addEventListener('touchend', onPointerUp);
+    animFrameRef.current = requestAnimationFrame(updateProgress);
   };
 
-  const trackWidth = trackRef.current?.offsetWidth || 340;
-  const maxDrag = Math.max(100, trackWidth - 60);
-  const dragRatio = Math.min(1, Math.max(0, dragOffset / maxDrag));
+  const cancelHold = () => {
+    if (isSubmitted) return;
+    setIsHolding(false);
+    setHoldProgress(0);
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+    }
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+    }
+  };
 
   const toggleEditing = (section) => {
     setEditingSection(prev => prev === section ? null : section);
@@ -1061,48 +1043,36 @@ export default function Screen26AssessmentResults({
 
       </div>
 
-      {/* Slide to Submit Component */}
+      {/* Hold to Submit Assessment Button */}
       <div style={{ marginTop: 32, paddingTop: 16, borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <div style={{ fontSize: 11, fontWeight: 900, color: '#021744', textAlign: 'center', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
-          Slide handle to submit assessment
-        </div>
-
         <div
-          ref={trackRef}
-          className="welcome-start-slider"
-          style={{ width: '100%' }}
+          className="welcome-hold-button"
+          onMouseDown={startHold}
+          onMouseUp={cancelHold}
+          onMouseLeave={cancelHold}
+          onTouchStart={startHold}
+          onTouchEnd={cancelHold}
+          onTouchCancel={cancelHold}
+          style={{
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            WebkitTouchCallout: 'none',
+            width: '100%'
+          }}
         >
-          {/* Draggable Arrow Thumb */}
+          {/* Animated Progress Fill Background */}
           <div
-            className="slider-thumb-circle"
+            className="hold-progress-bar"
             style={{
-              transform: `translateX(${dragOffset}px)`,
-              transition: isDragging ? 'none' : 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
-              cursor: 'grab'
+              width: `${holdProgress}%`,
+              transition: isHolding ? 'none' : 'width 0.25s ease-out'
             }}
-            onPointerDown={handlePointerDown}
-          >
-            {isSubmitted ? <CheckCircle2 size={24} color="#059669" /> : <ArrowRight size={22} strokeWidth={3} />}
-          </div>
+          />
 
-          {/* Text and chevrons that fade as thumb is dragged */}
-          <div
-            className="slider-cta-text"
-            style={{
-              opacity: Math.max(0.1, 1 - dragRatio * 1.5),
-              transform: `translateX(${dragOffset * 0.15}px)`
-            }}
-          >
-            {isSubmitted ? 'Submitted!' : 'Slide to Submit Assessment'}
-          </div>
-
-          <div
-            className="slider-chevrons"
-            style={{ opacity: Math.max(0.1, 1 - dragRatio * 1.2) }}
-          >
-            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
-            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
-            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline' }} />
+          <div className="hold-button-content" style={{ justifyContent: 'center' }}>
+            <span className="hold-label-text">
+              {isSubmitted ? 'Submitted!' : isHolding ? 'Hold to Submit...' : 'Hold to Submit Assessment'}
+            </span>
           </div>
         </div>
       </div>
