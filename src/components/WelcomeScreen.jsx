@@ -2,75 +2,51 @@ import React, { useState, useRef } from 'react';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 
 export default function WelcomeScreen({ onStart }) {
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const trackRef = useRef(null);
-  const startXRef = useRef(0);
-  const currentOffsetRef = useRef(0);
+  const [isHolding, setIsHolding] = useState(false);
+  const [holdProgress, setHoldProgress] = useState(0);
+  const holdTimerRef = useRef(null);
+  const animFrameRef = useRef(null);
+  const holdStartTimeRef = useRef(0);
+  const HOLD_DURATION_MS = 1000; // Hold for 1 second to start
 
-  const handlePointerDown = (e) => {
-    e.preventDefault();
-    const track = trackRef.current;
-    if (!track) return;
-    
-    // Set pointer capture to capture move/up outside element
-    try {
-      e.target.setPointerCapture(e.pointerId);
-    } catch (err) {
-      // ignore if unsupported
+  const triggerStart = () => {
+    if (typeof navigator !== 'undefined' && navigator.vibrate) {
+      navigator.vibrate([60, 40, 80]);
     }
+    onStart();
+  };
 
-    const startX = e.clientX || (e.touches && e.touches[0].clientX) || 0;
-    startXRef.current = startX;
-    currentOffsetRef.current = 0;
-    setIsDragging(true);
+  const startHold = (e) => {
+    // Prevent context menus or text selection
+    if (e.cancelable) e.preventDefault();
+    setIsHolding(true);
+    holdStartTimeRef.current = Date.now();
 
-    const maxDrag = Math.max(100, track.offsetWidth - 60);
+    const updateProgress = () => {
+      const elapsed = Date.now() - holdStartTimeRef.current;
+      const progress = Math.min(100, (elapsed / HOLD_DURATION_MS) * 100);
+      setHoldProgress(progress);
 
-    const onPointerMove = (moveEvt) => {
-      const currentX = moveEvt.clientX || (moveEvt.touches && moveEvt.touches[0].clientX) || 0;
-      const diff = currentX - startXRef.current;
-      const clamped = Math.max(0, Math.min(maxDrag, diff));
-      currentOffsetRef.current = clamped;
-      setDragOffset(clamped);
-    };
-
-    const onPointerUp = (upEvt) => {
-      window.removeEventListener('pointermove', onPointerMove);
-      window.removeEventListener('pointerup', onPointerUp);
-      window.removeEventListener('pointercancel', onPointerUp);
-      window.removeEventListener('touchmove', onPointerMove);
-      window.removeEventListener('touchend', onPointerUp);
-      
-      setIsDragging(false);
-
-      // Only trigger if dragged towards the end (70% or more)
-      if (currentOffsetRef.current >= maxDrag * 0.70) {
-        setDragOffset(maxDrag);
-        // Haptic feedback if available
-        if (typeof navigator !== 'undefined' && navigator.vibrate) {
-          navigator.vibrate(50);
-        }
-        setTimeout(() => {
-          onStart();
-        }, 180);
+      if (progress < 100) {
+        animFrameRef.current = requestAnimationFrame(updateProgress);
       } else {
-        // Snap back to starting position
-        setDragOffset(0);
-        currentOffsetRef.current = 0;
+        triggerStart();
       }
     };
 
-    window.addEventListener('pointermove', onPointerMove);
-    window.addEventListener('pointerup', onPointerUp);
-    window.addEventListener('pointercancel', onPointerUp);
-    window.addEventListener('touchmove', onPointerMove, { passive: false });
-    window.addEventListener('touchend', onPointerUp);
+    animFrameRef.current = requestAnimationFrame(updateProgress);
   };
 
-  const trackWidth = trackRef.current?.offsetWidth || 340;
-  const maxDrag = Math.max(100, trackWidth - 60);
-  const dragRatio = Math.min(1, Math.max(0, dragOffset / maxDrag));
+  const cancelHold = () => {
+    setIsHolding(false);
+    setHoldProgress(0);
+    if (animFrameRef.current) {
+      cancelAnimationFrame(animFrameRef.current);
+    }
+    if (holdTimerRef.current) {
+      clearTimeout(holdTimerRef.current);
+    }
+  };
 
   return (
     <div className="welcome-viewport">
@@ -98,42 +74,42 @@ export default function WelcomeScreen({ onStart }) {
         </p>
       </div>
 
-      {/* Drag-To-Start Slider Track (No click-to-start, dragging arrow required) */}
+      {/* Hold to Start Button Container */}
       <div
-        ref={trackRef}
-        className="welcome-start-slider"
+        className="welcome-hold-button"
+        onMouseDown={startHold}
+        onMouseUp={cancelHold}
+        onMouseLeave={cancelHold}
+        onTouchStart={startHold}
+        onTouchEnd={cancelHold}
+        onTouchCancel={cancelHold}
+        style={{
+          userSelect: 'none',
+          WebkitUserSelect: 'none',
+          WebkitTouchCallout: 'none'
+        }}
       >
-        {/* Draggable Arrow Thumb */}
+        {/* Animated Progress Fill Background */}
         <div
-          className="slider-thumb-circle"
+          className="hold-progress-bar"
           style={{
-            transform: `translateX(${dragOffset}px)`,
-            transition: isDragging ? 'none' : 'transform 0.28s cubic-bezier(0.16, 1, 0.3, 1)',
-            cursor: 'grab'
+            width: `${holdProgress}%`,
+            transition: isHolding ? 'none' : 'width 0.25s ease-out'
           }}
-          onPointerDown={handlePointerDown}
-        >
-          <ArrowRight size={22} strokeWidth={3} />
-        </div>
+        />
 
-        {/* Text and chevrons that fade as thumb is dragged */}
-        <div
-          className="slider-cta-text"
-          style={{
-            opacity: Math.max(0.1, 1 - dragRatio * 1.5),
-            transform: `translateX(${dragOffset * 0.15}px)`
-          }}
-        >
-          Slide to Start
-        </div>
-
-        <div
-          className="slider-chevrons"
-          style={{ opacity: Math.max(0.1, 1 - dragRatio * 1.2) }}
-        >
-          <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
-          <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
-          <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline' }} />
+        <div className="hold-button-content">
+          <div className="hold-icon-wrap">
+            <ArrowRight size={22} strokeWidth={3} className={isHolding ? 'hold-pulse-icon' : ''} />
+          </div>
+          <span className="hold-label-text">
+            {isHolding ? 'Hold to Begin...' : 'Hold to Start'}
+          </span>
+          <div className="hold-chevrons">
+            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
+            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline', marginRight: -6 }} />
+            <ChevronRight size={18} strokeWidth={3} style={{ display: 'inline' }} />
+          </div>
         </div>
       </div>
 

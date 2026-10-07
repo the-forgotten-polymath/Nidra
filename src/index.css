@@ -749,7 +749,7 @@ html, body {
   line-height: 1.5;
 }
 
-.welcome-start-slider {
+.welcome-hold-button {
   width: 100%;
   height: 64px;
   border-radius: var(--radius-full);
@@ -757,18 +757,41 @@ html, body {
   padding: 6px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
   position: relative;
+  overflow: hidden;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(4, 60, 160, 0.3);
-  transition: transform 0.15s ease;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  touch-action: manipulation;
 }
 
-.welcome-start-slider:active {
+.welcome-hold-button:active {
   transform: scale(0.98);
+  box-shadow: 0 4px 12px rgba(4, 60, 160, 0.25);
 }
 
-.slider-thumb-circle {
+.hold-progress-bar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, #2563EB 0%, #3B82F6 100%);
+  border-radius: var(--radius-full);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hold-button-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  pointer-events: none;
+}
+
+.hold-icon-wrap {
   width: 52px;
   height: 52px;
   border-radius: 50%;
@@ -778,18 +801,29 @@ html, body {
   justify-content: center;
   color: #043CA0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
 }
 
-.slider-cta-text {
+.hold-pulse-icon {
+  animation: pulseHoldIcon 0.6s infinite alternate ease-in-out;
+}
+
+@keyframes pulseHoldIcon {
+  from { transform: scale(1); }
+  to { transform: scale(1.18); }
+}
+
+.hold-label-text {
   flex: 1;
   text-align: center;
   font-size: 16px;
   font-weight: 700;
   color: #FFFFFF;
+  letter-spacing: 0.3px;
 }
 
-.slider-chevrons {
-  color: rgba(255, 255, 255, 0.4);
+.hold-chevrons {
+  color: rgba(255, 255, 255, 0.5);
   font-weight: 800;
   padding-right: 18px;
 }
