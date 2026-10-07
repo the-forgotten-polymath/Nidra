@@ -4,11 +4,11 @@ import ScreenHeaderBlock from '../components/ScreenHeaderBlock';
 
 export default function Screen4SleepProblems({ store, updateField, isDeveloperMode }) {
   const options = [
+    'Snoring while sleeping',
     'Trouble falling asleep',
     'Waking up often during the night',
     'Waking up earlier than you want to',
     'Waking up but not feeling rested',
-    'Snoring or breathing problems while sleeping',
     'Something else'
   ];
 

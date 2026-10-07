@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Minus, Plus, Scale } from 'lucide-react';
 import ScreenHeaderBlock from '../components/ScreenHeaderBlock';
 
@@ -9,24 +9,29 @@ export default function Screen17BodyMeasurements({
   bmiCategoryInfo,
   isDeveloperMode
 }) {
+  const [focusedField, setFocusedField] = useState('weight');
+
   return (
     <div className="screen-scroll-container">
       <ScreenHeaderBlock
         screenSubtitle="Screen 17 — Body measurements"
         title="Height and weight"
-        caption="Your neck and waist are already done."
+        caption="Enter your measurements, or have your clinical care team record them."
         isDeveloperMode={isDeveloperMode}
       />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         {/* Weight Input */}
-        <div>
+        <div onClick={() => setFocusedField('weight')}>
           <div className="input-label-row">
             <label className="input-label">Weight</label>
             {store.weightKg > 0 && (
               <button
                 type="button"
-                onClick={() => updateField('weightKg', 0.0)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateField('weightKg', 0.0);
+                }}
                 style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
               >
                 Clear
@@ -34,11 +39,19 @@ export default function Screen17BodyMeasurements({
             )}
           </div>
 
-          <div className="stepper-card">
+          <div
+            className="stepper-card"
+            style={{
+              border: focusedField === 'weight' ? '2px solid var(--color-outline)' : '1.5px solid rgba(199, 190, 219, 0.45)',
+              transition: 'border 0.2s ease, box-shadow 0.2s ease'
+            }}
+          >
             <button
               type="button"
               className="stepper-btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                setFocusedField('weight');
                 if (store.weightKg >= 1) updateField('weightKg', Math.max(0, store.weightKg - 1));
               }}
               disabled={store.weightKg <= 0}
@@ -57,7 +70,9 @@ export default function Screen17BodyMeasurements({
             <button
               type="button"
               className="stepper-btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                setFocusedField('weight');
                 if (store.weightKg === 0) updateField('weightKg', 65.0);
                 else if (store.weightKg < 250) updateField('weightKg', store.weightKg + 1);
               }}
@@ -67,30 +82,39 @@ export default function Screen17BodyMeasurements({
             </button>
           </div>
 
-          {/* Quick Add Weight */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)' }}>Quick add:</span>
-            {[1, 5, 10].map(inc => (
-              <button
-                key={inc}
-                type="button"
-                className="quick-chip"
-                onClick={() => updateField('weightKg', Math.min(250, (store.weightKg || 60) + inc))}
-              >
-                +{inc} kg
-              </button>
-            ))}
-          </div>
+          {/* Quick Add Weight (Only visible when focused) */}
+          {focusedField === 'weight' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, animation: 'fadeIn 0.2s ease' }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)' }}>Quick add:</span>
+              {[1, 5, 10].map(inc => (
+                <button
+                  key={inc}
+                  type="button"
+                  className="quick-chip"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFocusedField('weight');
+                    updateField('weightKg', Math.min(250, (store.weightKg || 60) + inc));
+                  }}
+                >
+                  +{inc} kg
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Height Input */}
-        <div>
+        <div onClick={() => setFocusedField('height')}>
           <div className="input-label-row">
             <label className="input-label">Height</label>
             {store.heightCm > 0 && (
               <button
                 type="button"
-                onClick={() => updateField('heightCm', 0.0)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  updateField('heightCm', 0.0);
+                }}
                 style={{ background: 'none', border: 'none', color: 'var(--color-text-muted)', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
               >
                 Clear
@@ -98,11 +122,19 @@ export default function Screen17BodyMeasurements({
             )}
           </div>
 
-          <div className="stepper-card">
+          <div
+            className="stepper-card"
+            style={{
+              border: focusedField === 'height' ? '2px solid var(--color-outline)' : '1.5px solid rgba(199, 190, 219, 0.45)',
+              transition: 'border 0.2s ease, box-shadow 0.2s ease'
+            }}
+          >
             <button
               type="button"
               className="stepper-btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                setFocusedField('height');
                 if (store.heightCm >= 1) updateField('heightCm', Math.max(0, store.heightCm - 1));
               }}
               disabled={store.heightCm <= 0}
@@ -121,7 +153,9 @@ export default function Screen17BodyMeasurements({
             <button
               type="button"
               className="stepper-btn"
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
+                setFocusedField('height');
                 if (store.heightCm === 0) updateField('heightCm', 170.0);
                 else if (store.heightCm < 230) updateField('heightCm', store.heightCm + 1);
               }}
@@ -131,20 +165,26 @@ export default function Screen17BodyMeasurements({
             </button>
           </div>
 
-          {/* Quick Add Height */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)' }}>Quick add:</span>
-            {[1, 5, 10].map(inc => (
-              <button
-                key={inc}
-                type="button"
-                className="quick-chip"
-                onClick={() => updateField('heightCm', Math.min(230, (store.heightCm || 160) + inc))}
-              >
-                +{inc} cm
-              </button>
-            ))}
-          </div>
+          {/* Quick Add Height (Only visible when focused) */}
+          {focusedField === 'height' && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 8, animation: 'fadeIn 0.2s ease' }}>
+              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)' }}>Quick add:</span>
+              {[1, 5, 10].map(inc => (
+                <button
+                  key={inc}
+                  type="button"
+                  className="quick-chip"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFocusedField('height');
+                    updateField('heightCm', Math.min(230, (store.heightCm || 160) + inc));
+                  }}
+                >
+                  +{inc} cm
+                </button>
+              ))}
+            </div>
+          )}
         </div>
 
         {/* Live Dynamic BMI Display Card */}

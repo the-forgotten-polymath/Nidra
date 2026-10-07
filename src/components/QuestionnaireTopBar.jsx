@@ -22,7 +22,6 @@ export default function QuestionnaireTopBar({
         return '#6C5CE7';
       case 'breathingPart1':
       case 'breathingPart2':
-      case 'morningFeelings':
       case 'measureNeck':
       case 'measureWaist':
       case 'bodyMeasurements':

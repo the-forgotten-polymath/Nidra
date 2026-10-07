@@ -2,7 +2,7 @@ import React from 'react';
 import { Heart, Activity, AlertTriangle } from 'lucide-react';
 import ScreenHeaderBlock from '../components/ScreenHeaderBlock';
 
-export default function Screen18BloodPressure({
+export default function Screen20BloodPressure({
   store,
   updateField,
   validations,
@@ -24,13 +24,36 @@ export default function Screen18BloodPressure({
   return (
     <div className="screen-scroll-container">
       <ScreenHeaderBlock
-        screenSubtitle="Screen 18 — Blood pressure"
+        screenSubtitle="Screen 20 — Blood pressure"
         title="Blood pressure (optional)"
         caption="Enter your recent reading, or have your doctor / nurse record it during your visit."
         isDeveloperMode={isDeveloperMode}
       />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+        {/* BP Machine Illustration */}
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            background: '#FFFFFF',
+            borderRadius: 18,
+            border: '1.5px solid var(--color-outline)',
+            padding: 16
+          }}
+        >
+          <img
+            src="/BP-machine.png"
+            alt="Blood Pressure Machine"
+            style={{
+              maxHeight: 180,
+              maxWidth: '100%',
+              objectFit: 'contain'
+            }}
+          />
+        </div>
+
         {/* 2-Block Card Layout */}
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
           {/* Block 1: Systolic / Top Number */}
