@@ -49,17 +49,18 @@ export default function QuestionnaireTopBar({
   return (
     <div className="questionnaire-top-bar">
       <div className="top-bar-nav-row" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-        {/* Left Side: Back Button & Section Badge */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <button
-            type="button"
-            className="back-circle-btn"
-            onClick={onBack}
-            aria-label="Previous screen"
-          >
-            <ChevronLeft size={20} strokeWidth={2.5} />
-          </button>
+        {/* Left Side: Back Button */}
+        <button
+          type="button"
+          className="back-circle-btn"
+          onClick={onBack}
+          aria-label="Previous screen"
+        >
+          <ChevronLeft size={20} strokeWidth={2.5} />
+        </button>
 
+        {/* Right Side: Section Badge + Language Toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div className="category-badge-pill">
             <span
               className="badge-dot"
@@ -67,36 +68,30 @@ export default function QuestionnaireTopBar({
             />
             <span>{currentScreen.sectionTitle}</span>
           </div>
-        </div>
 
-        {/* Center: Top Center Branding */}
-        <div style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 900, color: '#043CA0', letterSpacing: -0.5 }}>
-          Nidra
+          <button
+            type="button"
+            onClick={onToggleLanguage}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 4,
+              padding: '5px 10px',
+              borderRadius: 20,
+              background: '#FFFFFF',
+              border: '1.5px solid #043CA0',
+              color: '#043CA0',
+              fontSize: 11,
+              fontWeight: 800,
+              cursor: 'pointer',
+              boxShadow: 'var(--shadow-sm)'
+            }}
+            aria-label="Toggle Language"
+          >
+            <Globe size={14} strokeWidth={2.5} />
+            <span>{language === 'en' ? 'English' : 'हिंदी'}</span>
+          </button>
         </div>
-
-        {/* Right Side: Language Toggle (English / Hindi) */}
-        <button
-          type="button"
-          onClick={onToggleLanguage}
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: 4,
-            padding: '5px 10px',
-            borderRadius: 20,
-            background: '#FFFFFF',
-            border: '1.5px solid #043CA0',
-            color: '#043CA0',
-            fontSize: 11,
-            fontWeight: 800,
-            cursor: 'pointer',
-            boxShadow: 'var(--shadow-sm)'
-          }}
-          aria-label="Toggle Language"
-        >
-          <Globe size={14} strokeWidth={2.5} />
-          <span>{language === 'en' ? 'English' : 'हिंदी'}</span>
-        </button>
       </div>
 
       {/* Fluid Liquid Progress Bar */}
