@@ -138,14 +138,14 @@ export default function WelcomeScreen({ onStart, onSelectPreset }) {
       </div>
 
       {/* Footer Subtext */}
-      <div style={{ textAlign: 'center', fontSize: 11, fontWeight: 700, color: 'rgba(255, 255, 255, 0.8)', paddingTop: 12 }}>
+      <div style={{ textAlign: 'center', fontSize: 11, fontWeight: 800, color: '#021744', paddingTop: 12 }}>
         No account required • Takes about 5-10 minutes
       </div>
 
       {/* Quick Test Demo Presets */}
       {onSelectPreset && (
-        <div style={{ marginTop: 14, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.2)', textAlign: 'center' }}>
-          <div style={{ fontSize: 10, fontWeight: 900, color: 'rgba(255, 255, 255, 0.95)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+        <div style={{ marginTop: 14, paddingTop: 10, borderTop: '1.5px solid rgba(2, 23, 68, 0.15)', textAlign: 'center' }}>
+          <div style={{ fontSize: 10, fontWeight: 900, color: '#021744', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
             🧪 Quick Test Diagnostic Results (1-Click)
           </div>
           <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
@@ -162,15 +162,16 @@ export default function WelcomeScreen({ onStart, onSelectPreset }) {
                 type="button"
                 onClick={() => onSelectPreset(p.id)}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.22)',
-                  border: '1px solid rgba(255, 255, 255, 0.4)',
-                  color: '#FFFFFF',
-                  padding: '4px 8px',
-                  borderRadius: 8,
-                  fontSize: 10,
+                  background: '#FFFFFF',
+                  border: '1.5px solid #021744',
+                  color: '#021744',
+                  padding: '5px 10px',
+                  borderRadius: 10,
+                  fontSize: 11,
                   fontWeight: 800,
                   cursor: 'pointer',
-                  backdropFilter: 'blur(4px)'
+                  boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)',
+                  transition: 'transform 0.15s ease'
                 }}
               >
                 {p.label}
