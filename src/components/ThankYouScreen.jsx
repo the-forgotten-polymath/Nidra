@@ -23,13 +23,6 @@ export default function ThankYouScreen({ store, onNewAssessment }) {
   }, [store]);
 
   useEffect(() => {
-    // Fire confetti celebration
-    confetti({
-      particleCount: 80,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
-
     // Submit payload to Supabase
     async function syncToCloud() {
       setSyncStatus('syncing');

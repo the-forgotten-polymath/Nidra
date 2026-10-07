@@ -44,6 +44,7 @@ export default function App() {
     updateField,
     resetAll,
     toggleDevMode,
+    toggleLanguage,
     totalWeightKg,
     heightFeet,
     heightInches,
@@ -270,6 +271,8 @@ export default function App() {
             <QuestionnaireTopBar
               currentScreenId={currentScreen.id}
               onBack={handleBack}
+              language={store.language}
+              onToggleLanguage={toggleLanguage}
             />
 
             {/* Screen Content with Smooth Transition */}

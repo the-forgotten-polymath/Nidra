@@ -2,6 +2,7 @@ import { useState, useMemo, useCallback } from 'react';
 
 export const INITIAL_INTAKE_STATE = {
   isDeveloperMode: false,
+  language: 'en', // 'en' | 'hi'
   
   // Screen 2: About You
   name: '',
@@ -153,6 +154,10 @@ export function useIntakeStore() {
 
   const toggleDevMode = useCallback(() => {
     setStore(prev => ({ ...prev, isDeveloperMode: !prev.isDeveloperMode }));
+  }, []);
+
+  const toggleLanguage = useCallback(() => {
+    setStore(prev => ({ ...prev, language: prev.language === 'en' ? 'hi' : 'en' }));
   }, []);
 
   // Validation checks
@@ -398,6 +403,7 @@ export function useIntakeStore() {
     updateField,
     resetAll,
     toggleDevMode,
+    toggleLanguage,
     totalWeightKg,
     heightFeet,
     heightInches,
