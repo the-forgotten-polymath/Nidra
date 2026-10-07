@@ -117,12 +117,13 @@ export const SCREENS = [
   { id: 'aboutYou', sectionNumber: 'SECTION 01', sectionTitle: 'ABOUT YOU', subtitle: 'Screen 2 — About you', progress: 1 / 25 },
   { id: 'contact', sectionNumber: 'SECTION 01', sectionTitle: 'ABOUT YOU', subtitle: 'Screen 3 — Contact', progress: 2 / 25 },
   { id: 'sleepProblems', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 4 — Sleep problems', progress: 3 / 25 },
-  { id: 'sleepDuration', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 5 — Sleep duration', progress: 4 / 25 },
-  { id: 'sleepFrequency', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 6 — Sleep frequency', progress: 5 / 25 },
-  { id: 'sleepHistory', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 7 — Problem duration', progress: 6 / 25 },
-  { id: 'breathingPart1', sectionNumber: 'SECTION 03', sectionTitle: 'SNORING', subtitle: 'Screen 8 — Snoring', progress: 7 / 24 },
-  { id: 'breathingPart2', sectionNumber: 'SECTION 03', sectionTitle: 'SNORING', subtitle: 'Screen 9 — While asleep', progress: 8 / 24 },
-  { id: 'daytimeAffect', sectionNumber: 'SECTION 04', sectionTitle: 'YOUR DAY', subtitle: 'Screen 10 — Daytime affect', progress: 9 / 24 },
+  { id: 'sleepSchedule', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 21 — Sleep schedule', progress: 4 / 25 },
+  { id: 'sleepDuration', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 5 — Sleep duration', progress: 5 / 25 },
+  { id: 'sleepFrequency', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 6 — Sleep frequency', progress: 6 / 25 },
+  { id: 'sleepHistory', sectionNumber: 'SECTION 02', sectionTitle: 'YOUR SLEEP', subtitle: 'Screen 7 — Problem duration', progress: 7 / 25 },
+  { id: 'breathingPart1', sectionNumber: 'SECTION 03', sectionTitle: 'SNORING', subtitle: 'Screen 8 — Snoring', progress: 8 / 25 },
+  { id: 'breathingPart2', sectionNumber: 'SECTION 03', sectionTitle: 'SNORING', subtitle: 'Screen 9 — While asleep', progress: 9 / 25 },
+  { id: 'daytimeAffect', sectionNumber: 'SECTION 04', sectionTitle: 'YOUR DAY', subtitle: 'Screen 10 — Daytime affect', progress: 10 / 25 },
   { id: 'dailyLifeNaps', sectionNumber: 'SECTION 04', sectionTitle: 'YOUR DAY', subtitle: 'Screen 12 — Daytime naps', progress: 11 / 25 },
   { id: 'drivingSafety', sectionNumber: 'SECTION 05', sectionTitle: 'DRIVING & SAFETY', subtitle: 'Screen 13 — Driving safety', progress: 12 / 25 },
   { id: 'legSensationsPart1', sectionNumber: 'SECTION 06', sectionTitle: 'LEG SENSATIONS', subtitle: 'Screen 14 — Leg sensations', progress: 13 / 25 },
@@ -132,12 +133,11 @@ export const SCREENS = [
   { id: 'measureWaist', sectionNumber: 'SECTION 08', sectionTitle: 'MEASUREMENTS', subtitle: 'Screen 18 — Waist measurement', progress: 17 / 25 },
   { id: 'bodyMeasurements', sectionNumber: 'SECTION 09', sectionTitle: 'BODY MEASUREMENTS', subtitle: 'Screen 19 — Body measurements', progress: 18 / 25 },
   { id: 'bloodPressure', sectionNumber: 'SECTION 10', sectionTitle: 'BLOOD PRESSURE', subtitle: 'Screen 20 — Blood pressure', progress: 19 / 25 },
-  { id: 'sleepSchedule', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 21 — Sleep schedule', progress: 20 / 25 },
-  { id: 'smokingAlcohol', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 22 — Smoking & alcohol', progress: 21 / 25 },
-  { id: 'caffeine', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 23 — Caffeine intake', progress: 22 / 25 },
-  { id: 'screenTime', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 24 — Screen exposure', progress: 23 / 26 },
-  { id: 'preBedtimeScreen', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 24B — Pre-bedtime screen', progress: 24 / 26 },
-  { id: 'work', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 25 — Work & shifts', progress: 25 / 26 },
+  { id: 'smokingAlcohol', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 22 — Smoking & alcohol', progress: 20 / 25 },
+  { id: 'caffeine', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 23 — Caffeine intake', progress: 21 / 25 },
+  { id: 'screenTime', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 24 — Screen exposure', progress: 22 / 25 },
+  { id: 'preBedtimeScreen', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 24B — Pre-bedtime screen', progress: 23 / 25 },
+  { id: 'work', sectionNumber: 'SECTION 11', sectionTitle: 'DAILY HABITS', subtitle: 'Screen 25 — Work & shifts', progress: 24 / 25 },
   { id: 'reviewReadings', sectionNumber: 'SECTION 12', sectionTitle: 'REVIEW READINGS', subtitle: 'Screen 26 — Review & Submit', progress: 1.0 }
 ];
 
@@ -181,6 +181,24 @@ export function useIntakeStore() {
     }
     return true;
   }, [store.isDeveloperMode, store.selectedSleepProblems, store.otherSleepProblemText]);
+
+  const isScreen21Valid = useMemo(() => {
+    if (store.isDeveloperMode) return true;
+    return Boolean(store.weekdayBedtime) &&
+           Boolean(store.weekdayWakeTime) &&
+           store.weekdaySleepHours >= 0 &&
+           Boolean(store.weekendBedtime) &&
+           Boolean(store.weekendWakeTime) &&
+           store.weekendSleepHours >= 0;
+  }, [
+    store.isDeveloperMode,
+    store.weekdayBedtime,
+    store.weekdayWakeTime,
+    store.weekdaySleepHours,
+    store.weekendBedtime,
+    store.weekendWakeTime,
+    store.weekendSleepHours
+  ]);
 
   const isScreen5Valid = useMemo(() => {
     if (store.isDeveloperMode) return true;
@@ -433,6 +451,7 @@ export function useIntakeStore() {
       isDiastolicValid,
       isBloodPressurePlausible,
       isScreen20Valid,
+      isScreen21Valid,
       isScreen22Valid,
       isScreen25Valid
     }

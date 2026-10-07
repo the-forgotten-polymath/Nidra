@@ -229,7 +229,7 @@ export default function App() {
       case 'bloodPressure':
         return validations.isScreen20Valid;
       case 'sleepSchedule':
-        return true;
+        return validations.isScreen21Valid;
       case 'smokingAlcohol':
         return validations.isScreen22Valid;
       case 'caffeine':

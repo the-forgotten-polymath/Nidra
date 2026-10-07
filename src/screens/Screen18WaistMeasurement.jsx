@@ -43,9 +43,6 @@ export default function Screen18WaistMeasurement({ store, updateField, isDevelop
               aspectRatio: '16/9'
             }}
           />
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text-muted)', textAlign: 'center', paddingBottom: 2 }}>
-            Belly-button level during normal expiration (SONA protocol)
-          </p>
         </div>
 
         {/* Clinical protocol note */}

@@ -16,30 +16,6 @@ export default function Screen5SleepDuration({ store, updateField, isDeveloperMo
       />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {/* Q0: Bedtime / At what time do you sleep? */}
-        <div>
-          <div className="input-label-row">
-            <label className="input-label" htmlFor="screen5-bedtime-input">
-              At what time do you usually sleep?
-            </label>
-          </div>
-          <div className="input-group-row">
-            <div className="input-group-prefix">
-              <Moon size={18} color="#8B94FB" />
-            </div>
-            <input
-              id="screen5-bedtime-input"
-              type="time"
-              className="input-group-field"
-              value={store.weekdayBedtime || store.bedtime || '23:00'}
-              onChange={(e) => {
-                updateField('weekdayBedtime', e.target.value);
-                updateField('bedtime', e.target.value);
-              }}
-            />
-          </div>
-        </div>
-
         {/* Q1: Time to fall asleep */}
         <NumericStepperField
           title="How much time does it take you to fall asleep?"
