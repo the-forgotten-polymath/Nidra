@@ -99,8 +99,7 @@ export default function ThankYouScreen({ store, onNewAssessment }) {
           </div>
           <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-muted)', marginTop: 2 }}>
             {syncStatus === 'syncing' && 'Connecting to clinical database endpoint...'}
-            {syncStatus === 'success' && recordId && `Ref ID: ${recordId}`}
-            {syncStatus === 'success' && !recordId && 'Your clinical responses were saved safely.'}
+            {syncStatus === 'success' && 'Your clinical responses were saved safely.'}
             {syncStatus === 'error' && (errorMessage || 'Saved locally for review.')}
           </div>
         </div>
