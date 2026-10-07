@@ -189,199 +189,201 @@ export default function App() {
               onBack={handleBack}
             />
 
-            {/* Screen Content */}
-            {currentScreen.id === 'aboutYou' && (
-              <Screen2AboutYou
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-                onContinue={handleNext}
-              />
-            )}
-            {currentScreen.id === 'contact' && (
-              <Screen3Contact
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'sleepProblems' && (
-              <Screen4SleepProblems
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'sleepDuration' && (
-              <Screen5SleepDuration
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'sleepFrequency' && (
-              <Screen6SleepFrequency
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'sleepHistory' && (
-              <Screen7SleepHistory
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'breathingPart1' && (
-              <Screen8Breathing
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'breathingPart2' && (
-              <Screen9WhileAsleep
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'daytimeAffect' && (
-              <Screen11DaytimeAffect
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'dailyLifeNaps' && (
-              <Screen12DailyLifeNaps
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'drivingSafety' && (
-              <Screen13DrivingSafety
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'legSensationsPart1' && (
-              <Screen14LegSensations
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'legSensationsPart2' && (
-              <Screen15LegRelief
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'healthConditions' && (
-              <Screen16HealthConditions
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'measureNeck' && (
-              <Screen17NeckMeasurement
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'measureWaist' && (
-              <Screen18WaistMeasurement
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'bodyMeasurements' && (
-              <Screen19BodyMeasurements
-                store={store}
-                updateField={updateField}
-                totalWeightKg={totalWeightKg}
-                heightFeet={heightFeet}
-                heightInches={heightInches}
-                calculatedBMI={calculatedBMI}
-                bmiCategoryInfo={bmiCategoryInfo}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'bloodPressure' && (
-              <Screen20BloodPressure
-                store={store}
-                updateField={updateField}
-                validations={validations}
-                isDeveloperMode={store.isDeveloperMode}
-                onContinue={handleNext}
-              />
-            )}
-            {currentScreen.id === 'sleepSchedule' && (
-              <Screen21SleepSchedule
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'smokingAlcohol' && (
-              <Screen22SmokingAlcohol
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'caffeine' && (
-              <Screen23Caffeine
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'screenTime' && (
-              <Screen24ScreenTime
-                store={store}
-                updateField={updateField}
-                totalPreBedtimeScreenMinutes={totalPreBedtimeScreenMinutes}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'preBedtimeScreen' && (
-              <Screen24PreBedtimeScreen
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'work' && (
-              <Screen25Work
-                store={store}
-                updateField={updateField}
-                isDeveloperMode={store.isDeveloperMode}
-              />
-            )}
-            {currentScreen.id === 'reviewReadings' && (
-              <Screen26AssessmentResults
-                store={store}
-                updateField={updateField}
-                totalWeightKg={totalWeightKg}
-                heightFeet={heightFeet}
-                heightInches={heightInches}
-                totalPreBedtimeScreenMinutes={totalPreBedtimeScreenMinutes}
-                calculatedBMI={calculatedBMI}
-                bmiCategoryInfo={bmiCategoryInfo}
-                onContinue={handleNext}
-                onBack={handleBack}
-                onNavigateToScreen={handleSelectScreen}
-              />
-            )}
+            {/* Screen Content with Smooth Transition */}
+            <div key={currentScreen.id} className="screen-transition-wrapper">
+              {currentScreen.id === 'aboutYou' && (
+                <Screen2AboutYou
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                  onContinue={handleNext}
+                />
+              )}
+              {currentScreen.id === 'contact' && (
+                <Screen3Contact
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'sleepProblems' && (
+                <Screen4SleepProblems
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'sleepDuration' && (
+                <Screen5SleepDuration
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'sleepFrequency' && (
+                <Screen6SleepFrequency
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'sleepHistory' && (
+                <Screen7SleepHistory
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'breathingPart1' && (
+                <Screen8Breathing
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'breathingPart2' && (
+                <Screen9WhileAsleep
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'daytimeAffect' && (
+                <Screen11DaytimeAffect
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'dailyLifeNaps' && (
+                <Screen12DailyLifeNaps
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'drivingSafety' && (
+                <Screen13DrivingSafety
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'legSensationsPart1' && (
+                <Screen14LegSensations
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'legSensationsPart2' && (
+                <Screen15LegRelief
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'healthConditions' && (
+                <Screen16HealthConditions
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'measureNeck' && (
+                <Screen17NeckMeasurement
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'measureWaist' && (
+                <Screen18WaistMeasurement
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'bodyMeasurements' && (
+                <Screen19BodyMeasurements
+                  store={store}
+                  updateField={updateField}
+                  totalWeightKg={totalWeightKg}
+                  heightFeet={heightFeet}
+                  heightInches={heightInches}
+                  calculatedBMI={calculatedBMI}
+                  bmiCategoryInfo={bmiCategoryInfo}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'bloodPressure' && (
+                <Screen20BloodPressure
+                  store={store}
+                  updateField={updateField}
+                  validations={validations}
+                  isDeveloperMode={store.isDeveloperMode}
+                  onContinue={handleNext}
+                />
+              )}
+              {currentScreen.id === 'sleepSchedule' && (
+                <Screen21SleepSchedule
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'smokingAlcohol' && (
+                <Screen22SmokingAlcohol
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'caffeine' && (
+                <Screen23Caffeine
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'screenTime' && (
+                <Screen24ScreenTime
+                  store={store}
+                  updateField={updateField}
+                  totalPreBedtimeScreenMinutes={totalPreBedtimeScreenMinutes}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'preBedtimeScreen' && (
+                <Screen24PreBedtimeScreen
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'work' && (
+                <Screen25Work
+                  store={store}
+                  updateField={updateField}
+                  isDeveloperMode={store.isDeveloperMode}
+                />
+              )}
+              {currentScreen.id === 'reviewReadings' && (
+                <Screen26AssessmentResults
+                  store={store}
+                  updateField={updateField}
+                  totalWeightKg={totalWeightKg}
+                  heightFeet={heightFeet}
+                  heightInches={heightInches}
+                  totalPreBedtimeScreenMinutes={totalPreBedtimeScreenMinutes}
+                  calculatedBMI={calculatedBMI}
+                  bmiCategoryInfo={bmiCategoryInfo}
+                  onContinue={handleNext}
+                  onBack={handleBack}
+                  onNavigateToScreen={handleSelectScreen}
+                />
+              )}
+            </div>
 
             {/* Pinned Bottom Continue Button (Hidden on Review Readings Screen since it has sliding submit handle) */}
             {currentScreen.id !== 'reviewReadings' && (
