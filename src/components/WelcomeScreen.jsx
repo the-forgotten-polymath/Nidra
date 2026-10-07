@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ArrowRight, ChevronRight } from 'lucide-react';
 
-export default function WelcomeScreen({ onStart }) {
+export default function WelcomeScreen({ onStart, onSelectPreset }) {
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
   const trackRef = useRef(null);
@@ -138,9 +138,47 @@ export default function WelcomeScreen({ onStart }) {
       </div>
 
       {/* Footer Subtext */}
-      <div style={{ textAlign: 'center', fontSize: 11, fontWeight: 700, color: 'rgba(255, 255, 255, 0.8)', paddingTop: 14 }}>
+      <div style={{ textAlign: 'center', fontSize: 11, fontWeight: 700, color: 'rgba(255, 255, 255, 0.8)', paddingTop: 12 }}>
         No account required • Takes about 5-10 minutes
       </div>
+
+      {/* Quick Test Demo Presets */}
+      {onSelectPreset && (
+        <div style={{ marginTop: 14, paddingTop: 10, borderTop: '1px solid rgba(255,255,255,0.2)', textAlign: 'center' }}>
+          <div style={{ fontSize: 10, fontWeight: 900, color: 'rgba(255, 255, 255, 0.95)', textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+            🧪 Quick Test Diagnostic Results (1-Click)
+          </div>
+          <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap', justifyContent: 'center' }}>
+            {[
+              { id: 'NORMAL', label: 'Healthy Normal' },
+              { id: 'RLS', label: 'Only RLS' },
+              { id: 'INSOMNIA', label: 'Only Insomnia' },
+              { id: 'OSA_CARDIAC', label: 'OSA + Cardiac' },
+              { id: 'COMISA', label: 'COMISA' },
+              { id: 'ACCIDENT_RISK', label: '🏁 Crash Risk' }
+            ].map(p => (
+              <button
+                key={p.id}
+                type="button"
+                onClick={() => onSelectPreset(p.id)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.22)',
+                  border: '1px solid rgba(255, 255, 255, 0.4)',
+                  color: '#FFFFFF',
+                  padding: '4px 8px',
+                  borderRadius: 8,
+                  fontSize: 10,
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  backdropFilter: 'blur(4px)'
+                }}
+              >
+                {p.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

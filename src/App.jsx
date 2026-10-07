@@ -103,6 +103,89 @@ export default function App() {
     }
   };
 
+  const handleLoadPresetScenario = (scenarioKey) => {
+    resetAll();
+    setIsShowingWelcome(false);
+    
+    switch (scenarioKey) {
+      case 'NORMAL':
+        updateField('name', 'John Doe (Healthy Test)');
+        updateField('age', 28);
+        updateField('sex', 'Male');
+        setIsCompleted(true);
+        break;
+
+      case 'RLS':
+        updateField('name', 'Sarah Jenkins (RLS Test)');
+        updateField('age', 42);
+        updateField('sex', 'Female');
+        updateField('uncomfortable_leg_sensations', true);
+        updateField('urge_to_move_legs', true);
+        updateField('rest_worsens_legs', true);
+        updateField('movement_relieves_legs', true);
+        setIsCompleted(true);
+        break;
+
+      case 'INSOMNIA':
+        updateField('name', 'David Smith (Insomnia Test)');
+        updateField('age', 39);
+        updateField('sex', 'Male');
+        updateField('timeToFallAsleepMinutes', 45);
+        updateField('nocturnalAwakeningsCount', 3);
+        updateField('sleepComplaintNightsPerWeek', 5);
+        updateField('trouble_sleeping_nights_per_week', 5);
+        setIsCompleted(true);
+        break;
+
+      case 'OSA_CARDIAC':
+        updateField('name', 'Robert Johnson (OSA + Cardiac Test)');
+        updateField('age', 55);
+        updateField('sex', 'Male');
+        updateField('snoresWhenSleeping', true);
+        updateField('snores_when_sleeping', true);
+        updateField('drowsyDuringDay', true);
+        updateField('drowsy_during_day', true);
+        updateField('stopBreathingNoticed', true);
+        updateField('stop_breathing_noticed', true);
+        updateField('diagnosedConditions', ['Heart Disease / Coronary Artery Disease']);
+        updateField('diagnosed_conditions', ['Heart Disease / Coronary Artery Disease']);
+        setIsCompleted(true);
+        break;
+
+      case 'COMISA':
+        updateField('name', 'Emily Davis (COMISA Test)');
+        updateField('age', 48);
+        updateField('sex', 'Female');
+        updateField('snoresWhenSleeping', true);
+        updateField('snores_when_sleeping', true);
+        updateField('drowsyDuringDay', true);
+        updateField('drowsy_during_day', true);
+        updateField('timeToFallAsleepMinutes', 50);
+        updateField('nocturnalAwakeningsCount', 3);
+        updateField('sleepComplaintNightsPerWeek', 6);
+        updateField('trouble_sleeping_nights_per_week', 6);
+        setIsCompleted(true);
+        break;
+
+      case 'ACCIDENT_RISK':
+        updateField('name', 'Michael Brown (Crash Risk Test 🏁)');
+        updateField('age', 34);
+        updateField('sex', 'Male');
+        updateField('snoresWhenSleeping', true);
+        updateField('snores_when_sleeping', true);
+        updateField('drowsyDuringDay', true);
+        updateField('drowsy_during_day', true);
+        updateField('drivesVehicle', true);
+        updateField('sleepyWhileDriving', true);
+        updateField('had_driving_accident_or_near_miss', true);
+        setIsCompleted(true);
+        break;
+
+      default:
+        setIsShowingWelcome(false);
+    }
+  };
+
   // Check whether current screen continue button should be enabled
   const isContinueEnabled = () => {
     if (store.isDeveloperMode) return true;
@@ -166,7 +249,7 @@ export default function App() {
       <div className="mobile-app-container">
         {/* Welcome / Splash Screen */}
         {isShowingWelcome ? (
-          <WelcomeScreen onStart={() => setIsShowingWelcome(false)} />
+          <WelcomeScreen onStart={() => setIsShowingWelcome(false)} onSelectPreset={handleLoadPresetScenario} />
         ) : isCompleted ? (
           /* Thank You Screen */
           <ThankYouScreen
