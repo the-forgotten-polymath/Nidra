@@ -95,7 +95,7 @@ export default function Screen2AboutYou({ store, updateField, isDeveloperMode, o
         {/* Question 3: Sex */}
         <div>
           <div className="input-label-row">
-            <label className="input-label">What is your sex?</label>
+            <label className="input-label">You are</label>
           </div>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
