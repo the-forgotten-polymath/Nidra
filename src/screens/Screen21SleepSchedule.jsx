@@ -24,7 +24,7 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
-            padding: '12px 16px',
+            padding: '10px 14px',
             borderRadius: 14,
             fontWeight: 700,
             fontSize: 14,
@@ -33,11 +33,17 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
             background: activeTab === 'weekdays' ? '#043CA0' : '#FFFFFF',
             color: activeTab === 'weekdays' ? '#FFFFFF' : '#021744',
             boxShadow: activeTab === 'weekdays' ? '0 4px 12px rgba(4, 60, 160, 0.2)' : 'none',
-            transition: 'all 0.2s ease'
+            transition: 'all 0.2s ease',
+            lineHeight: 1.25
           }}
         >
-          <Briefcase size={16} />
-          <span>Weekdays (Mon-Fri)</span>
+          <Briefcase size={16} style={{ flexShrink: 0 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <span>Weekdays</span>
+            <span style={{ fontSize: 11, fontWeight: 600, opacity: activeTab === 'weekdays' ? 0.9 : 0.7, whiteSpace: 'nowrap' }}>
+              (Mon - Fri)
+            </span>
+          </div>
         </button>
 
         <button
@@ -48,7 +54,7 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
             alignItems: 'center',
             justifyContent: 'center',
             gap: 8,
-            padding: '12px 16px',
+            padding: '10px 14px',
             borderRadius: 14,
             fontWeight: 700,
             fontSize: 14,
@@ -57,11 +63,17 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
             background: activeTab === 'weekends' ? '#043CA0' : '#FFFFFF',
             color: activeTab === 'weekends' ? '#FFFFFF' : '#021744',
             boxShadow: activeTab === 'weekends' ? '0 4px 12px rgba(4, 60, 160, 0.2)' : 'none',
-            transition: 'all 0.2s ease'
+            transition: 'all 0.2s ease',
+            lineHeight: 1.25
           }}
         >
-          <Sparkles size={16} />
-          <span>Weekends (Sat-Sun)</span>
+          <Sparkles size={16} style={{ flexShrink: 0 }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+            <span>Weekends</span>
+            <span style={{ fontSize: 11, fontWeight: 600, opacity: activeTab === 'weekends' ? 0.9 : 0.7, whiteSpace: 'nowrap' }}>
+              (Sat - Sun)
+            </span>
+          </div>
         </button>
       </div>
 

@@ -16,9 +16,9 @@ export default function Screen6SleepFrequency({ store, updateField, isDeveloperM
           How many nights a week do you have sleep problems?
         </div>
 
-        {/* 1 to 7 Nights Horizontal Grid */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)', gap: 8 }}>
-          {[1, 2, 3, 4, 5, 6, 7].map((num) => {
+        {/* 0 to 7 Nights 4x2 Grid */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 10 }}>
+          {[0, 1, 2, 3, 4, 5, 6, 7].map((num) => {
             const isSelected = store.sleepComplaintNightsPerWeek === num;
             return (
               <button
@@ -27,13 +27,13 @@ export default function Screen6SleepFrequency({ store, updateField, isDeveloperM
                 className={`week-night-btn ${isSelected ? 'selected' : ''}`}
                 onClick={() => updateField('sleepComplaintNightsPerWeek', num)}
                 style={{
-                  height: 60,
+                  height: 64,
                   borderRadius: 16,
                   border: isSelected ? '2px solid var(--color-outline)' : '1.5px solid rgba(199, 190, 219, 0.45)',
                   backgroundColor: isSelected ? 'var(--color-outline)' : '#FFFFFF',
                   color: isSelected ? '#FFFFFF' : 'var(--color-text-dark)',
                   fontWeight: 800,
-                  fontSize: 18,
+                  fontSize: 20,
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
@@ -44,7 +44,7 @@ export default function Screen6SleepFrequency({ store, updateField, isDeveloperM
                 }}
               >
                 <span>{num}</span>
-                <span style={{ fontSize: 10, fontWeight: 600, opacity: isSelected ? 0.9 : 0.6 }}>
+                <span style={{ fontSize: 11, fontWeight: 600, opacity: isSelected ? 0.9 : 0.6 }}>
                   {num === 1 ? 'night' : 'nights'}
                 </span>
               </button>
