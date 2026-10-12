@@ -1,5 +1,5 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Pencil, CheckCircle2, ArrowRight, ChevronRight, Save, X, Plus, Minus, User, Bed, Wind, Activity, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Pencil, CheckCircle2, ArrowRight, Save, X, Plus, Minus, User, Bed, Wind, Activity, Sparkles } from 'lucide-react';
 
 export default function Screen26AssessmentResults({ 
   store, 
@@ -14,15 +14,8 @@ export default function Screen26AssessmentResults({
   onBack,
   onNavigateToScreen
 }) {
-  const [isHolding, setIsHolding] = useState(false);
-  const [holdProgress, setHoldProgress] = useState(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [editingSection, setEditingSection] = useState(null); // 'personal' | 'sleep' | 'breathing' | 'body' | 'lifestyle' | null
-  
-  const holdTimerRef = useRef(null);
-  const animFrameRef = useRef(null);
-  const holdStartTimeRef = useRef(0);
-  const HOLD_DURATION_MS = 1000; // Hold 1 sec to submit
 
   // Hypertension Flag: Systolic > 140 AND Diastolic > 90 AND History of Hypertension
   const isHypertensive = React.useMemo(() => {
@@ -34,7 +27,8 @@ export default function Screen26AssessmentResults({
     return sys > 140 && dia > 90 && Boolean(hasHistory);
   }, [store.bpSystolic, store.bpDiastolic, store.diagnosedConditions]);
 
-  const triggerSubmit = () => {
+  const handleSubmit = () => {
+    if (isSubmitted) return;
     setIsSubmitted(true);
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate([60, 40, 80]);
@@ -42,39 +36,6 @@ export default function Screen26AssessmentResults({
     setTimeout(() => {
       onContinue();
     }, 200);
-  };
-
-  const startHold = (e) => {
-    if (e.cancelable) e.preventDefault();
-    if (isSubmitted) return;
-    setIsHolding(true);
-    holdStartTimeRef.current = Date.now();
-
-    const updateProgress = () => {
-      const elapsed = Date.now() - holdStartTimeRef.current;
-      const progress = Math.min(100, (elapsed / HOLD_DURATION_MS) * 100);
-      setHoldProgress(progress);
-
-      if (progress < 100) {
-        animFrameRef.current = requestAnimationFrame(updateProgress);
-      } else {
-        triggerSubmit();
-      }
-    };
-
-    animFrameRef.current = requestAnimationFrame(updateProgress);
-  };
-
-  const cancelHold = () => {
-    if (isSubmitted) return;
-    setIsHolding(false);
-    setHoldProgress(0);
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-    }
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-    }
   };
 
   const toggleEditing = (section) => {
@@ -868,10 +829,10 @@ export default function Screen26AssessmentResults({
           {editingSection === 'legs' ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: '#F8FAFC', padding: 12, borderRadius: 14, border: '1px solid #E2E8F0' }}>
               {[
-                { key: 'legsUncomfortableResting', label: 'Uncomfortable urge to move legs?' },
-                { key: 'legsWorseEvening', label: 'Worse during evening/night?' },
-                { key: 'legsMovingHelps', label: 'Moving legs gives relief?' },
-                { key: 'legsNoOtherReason', label: 'Not caused by cramps or position?' }
+                { key: 'legsUncomfortableResting', label: 'Urge to move legs or uncomfortable sensation?' },
+                { key: 'legsWorseEvening', label: 'Worse in evening or night?' },
+                { key: 'legsMovingHelps', label: 'Better while stretching or walking?' },
+                { key: 'legsNoOtherReason', label: 'Increases on lying down or resting?' }
               ].map(item => (
                 <div key={item.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFF', padding: '8px 12px', borderRadius: 10, border: '1px solid #CBD5E1' }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: '#021744' }}>{item.label}</span>
@@ -935,7 +896,7 @@ export default function Screen26AssessmentResults({
                 <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsMovingHelps ? 'Yes' : store.legsMovingHelps === false ? 'No' : '--'}</span>
               </div>
               <div style={{ background: '#F8FAFC', padding: 10, borderRadius: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>No Other Reason</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>Increases on Rest</span>
                 <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsNoOtherReason ? 'Yes' : store.legsNoOtherReason === false ? 'No' : '--'}</span>
               </div>
             </div>
@@ -1043,38 +1004,27 @@ export default function Screen26AssessmentResults({
 
       </div>
 
-      {/* Hold to Submit Assessment Button */}
+      {/* Click to Submit Assessment Button */}
       <div style={{ marginTop: 32, paddingTop: 16, borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <div
-          className="welcome-hold-button"
-          onMouseDown={startHold}
-          onMouseUp={cancelHold}
-          onMouseLeave={cancelHold}
-          onTouchStart={startHold}
-          onTouchEnd={cancelHold}
-          onTouchCancel={cancelHold}
+        <button
+          type="button"
+          className="primary-continue-btn"
+          onClick={handleSubmit}
+          disabled={isSubmitted}
           style={{
-            userSelect: 'none',
-            WebkitUserSelect: 'none',
-            WebkitTouchCallout: 'none',
-            width: '100%'
+            height: 60,
+            borderRadius: 'var(--radius-full)',
+            background: '#043CA0',
+            borderColor: '#043CA0',
+            fontSize: 16,
+            fontWeight: 800,
+            boxShadow: '0 8px 20px rgba(4, 60, 160, 0.3)',
+            cursor: isSubmitted ? 'default' : 'pointer'
           }}
         >
-          {/* Animated Progress Fill Background */}
-          <div
-            className="hold-progress-bar"
-            style={{
-              width: `${holdProgress}%`,
-              transition: isHolding ? 'none' : 'width 0.25s ease-out'
-            }}
-          />
-
-          <div className="hold-button-content" style={{ justifyContent: 'center' }}>
-            <span className="hold-label-text">
-              {isSubmitted ? 'Submitted!' : isHolding ? 'Hold to Submit...' : 'Hold to Submit Assessment'}
-            </span>
-          </div>
-        </div>
+          <span>{isSubmitted ? 'Submitted!' : 'Submit Assessment'}</span>
+          {!isSubmitted && <ArrowRight size={20} strokeWidth={2.5} />}
+        </button>
       </div>
     </div>
   );

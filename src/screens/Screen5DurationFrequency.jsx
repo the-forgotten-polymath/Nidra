@@ -129,6 +129,25 @@ export default function Screen5DurationFrequency({ store, updateField, isDevelop
                     {h.toFixed(1)} hrs
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className="quick-chip"
+                  style={{
+                    padding: '3px 10px',
+                    fontSize: 11,
+                    fontWeight: 800,
+                    background: '#EFF6FF',
+                    color: '#043CA0',
+                    border: '1.5px solid #BFDBFE'
+                  }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setFocusedField('sleepDuration');
+                    updateField('sleepDurationHours', Math.min(16, Number((Number(store.sleepDurationHours || 0) + 0.5).toFixed(1))));
+                  }}
+                >
+                  +0.5 hr
+                </button>
               </div>
             </div>
           )}

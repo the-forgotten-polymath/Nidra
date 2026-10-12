@@ -132,19 +132,19 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
               <button
                 type="button"
                 className="stepper-btn"
-                onClick={() => updateField('weekdaySleepHours', Math.max(0, Math.round((store.weekdaySleepHours || 0) - 1)))}
+                onClick={() => updateField('weekdaySleepHours', Math.max(0, Number(((store.weekdaySleepHours || 0) - 0.5).toFixed(1))))}
                 disabled={(store.weekdaySleepHours || 0) <= 0}
               >
                 <Minus size={16} strokeWidth={2.5} />
               </button>
               <div className="stepper-value-display">
-                <span className="stepper-num">{Math.round(store.weekdaySleepHours || 0)}</span>
+                <span className="stepper-num">{Number(store.weekdaySleepHours || 0)}</span>
                 <span className="stepper-unit">hours</span>
               </div>
               <button
                 type="button"
                 className="stepper-btn"
-                onClick={() => updateField('weekdaySleepHours', Math.min(16, Math.round((store.weekdaySleepHours || 0) + 1)))}
+                onClick={() => updateField('weekdaySleepHours', Math.min(16, Number(((store.weekdaySleepHours || 0) + 0.5).toFixed(1))))}
               >
                 <Plus size={16} strokeWidth={2.5} />
               </button>
@@ -169,6 +169,21 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
                     {h} hrs
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className="quick-chip"
+                  style={{
+                    padding: '3px 10px',
+                    fontSize: 11,
+                    fontWeight: 800,
+                    background: '#EFF6FF',
+                    color: '#043CA0',
+                    border: '1.5px solid #BFDBFE'
+                  }}
+                  onClick={() => updateField('weekdaySleepHours', Math.min(16, Number((Number(store.weekdaySleepHours || 0) + 0.5).toFixed(1))))}
+                >
+                  +0.5 hr
+                </button>
               </div>
             </div>
           </div>
@@ -228,19 +243,19 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
               <button
                 type="button"
                 className="stepper-btn"
-                onClick={() => updateField('weekendSleepHours', Math.max(0, Math.round((store.weekendSleepHours || 0) - 1)))}
+                onClick={() => updateField('weekendSleepHours', Math.max(0, Number(((store.weekendSleepHours || 0) - 0.5).toFixed(1))))}
                 disabled={(store.weekendSleepHours || 0) <= 0}
               >
                 <Minus size={16} strokeWidth={2.5} />
               </button>
               <div className="stepper-value-display">
-                <span className="stepper-num">{Math.round(store.weekendSleepHours || 0)}</span>
+                <span className="stepper-num">{Number(store.weekendSleepHours || 0)}</span>
                 <span className="stepper-unit">hours</span>
               </div>
               <button
                 type="button"
                 className="stepper-btn"
-                onClick={() => updateField('weekendSleepHours', Math.min(16, Math.round((store.weekendSleepHours || 0) + 1)))}
+                onClick={() => updateField('weekendSleepHours', Math.min(16, Number(((store.weekendSleepHours || 0) + 0.5).toFixed(1))))}
               >
                 <Plus size={16} strokeWidth={2.5} />
               </button>
@@ -265,6 +280,21 @@ export default function Screen21SleepSchedule({ store, updateField, isDeveloperM
                     {h} hrs
                   </button>
                 ))}
+                <button
+                  type="button"
+                  className="quick-chip"
+                  style={{
+                    padding: '3px 10px',
+                    fontSize: 11,
+                    fontWeight: 800,
+                    background: '#EFF6FF',
+                    color: '#043CA0',
+                    border: '1.5px solid #BFDBFE'
+                  }}
+                  onClick={() => updateField('weekendSleepHours', Math.min(16, Number((Number(store.weekendSleepHours || 0) + 0.5).toFixed(1))))}
+                >
+                  +0.5 hr
+                </button>
               </div>
             </div>
           </div>

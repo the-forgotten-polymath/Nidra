@@ -202,8 +202,8 @@ export function useIntakeStore() {
 
   const isScreen5Valid = useMemo(() => {
     if (store.isDeveloperMode) return true;
-    return store.sleepDurationHours >= 0.0;
-  }, [store.isDeveloperMode, store.sleepDurationHours]);
+    return store.timeToFallAsleepMinutes >= 0 && store.nocturnalAwakeningsCount >= 0;
+  }, [store.isDeveloperMode, store.timeToFallAsleepMinutes, store.nocturnalAwakeningsCount]);
 
   const isScreen6Valid = useMemo(() => {
     if (store.isDeveloperMode) return true;

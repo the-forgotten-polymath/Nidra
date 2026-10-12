@@ -14,13 +14,13 @@ export default function Screen13LegRelief({ store, updateField, isDeveloperMode 
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         <YesNoPicker
-          question="Does it get better when you walk or move?"
+          question="Does it get better till the time you stretch or Walk ?"
           value={store.legsMovingHelps}
           onChange={(val) => updateField('legsMovingHelps', val)}
         />
 
         <YesNoPicker
-          question="Does it happen even without another obvious cause, like cramps or an injury?"
+          question="Does this sensation increases on lying down or resting ? "
           value={store.legsNoOtherReason}
           onChange={(val) => updateField('legsNoOtherReason', val)}
         />

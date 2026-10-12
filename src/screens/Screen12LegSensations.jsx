@@ -15,7 +15,7 @@ export default function Screen12LegSensations({ store, updateField, isDeveloperM
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
         {/* Q1: Urge to move legs */}
         <YesNoPicker
-          question="Do you feel an urge to move your legs, or an uncomfortable feeling in them, when lying down or resting?"
+          question="Do you feel an urge to move your legs or an uncomfortable sensation in them?"
           value={store.legsUncomfortableResting}
           onChange={(val) => {
             updateField('legsUncomfortableResting', val);
@@ -31,7 +31,7 @@ export default function Screen12LegSensations({ store, updateField, isDeveloperM
         {store.legsUncomfortableResting === true && (
           <div className="anim-slide-leading">
             <YesNoPicker
-              question="Is it worse in the evening or at night?"
+              question="Does this sensation gets worse in evening or night ? "
               value={store.legsWorseEvening}
               onChange={(val) => updateField('legsWorseEvening', val)}
             />

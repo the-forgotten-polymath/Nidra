@@ -1,51 +1,12 @@
-import React, { useState, useRef } from 'react';
-import { ArrowRight, ChevronRight } from 'lucide-react';
+import React from 'react';
+import { ArrowRight } from 'lucide-react';
 
 export default function WelcomeScreen({ onStart }) {
-  const [isHolding, setIsHolding] = useState(false);
-  const [holdProgress, setHoldProgress] = useState(0);
-  const holdTimerRef = useRef(null);
-  const animFrameRef = useRef(null);
-  const holdStartTimeRef = useRef(0);
-  const HOLD_DURATION_MS = 1000; // Hold for 1 second to start
-
-  const triggerStart = () => {
+  const handleStart = () => {
     if (typeof navigator !== 'undefined' && navigator.vibrate) {
       navigator.vibrate([60, 40, 80]);
     }
     onStart();
-  };
-
-  const startHold = (e) => {
-    // Prevent context menus or text selection
-    if (e.cancelable) e.preventDefault();
-    setIsHolding(true);
-    holdStartTimeRef.current = Date.now();
-
-    const updateProgress = () => {
-      const elapsed = Date.now() - holdStartTimeRef.current;
-      const progress = Math.min(100, (elapsed / HOLD_DURATION_MS) * 100);
-      setHoldProgress(progress);
-
-      if (progress < 100) {
-        animFrameRef.current = requestAnimationFrame(updateProgress);
-      } else {
-        triggerStart();
-      }
-    };
-
-    animFrameRef.current = requestAnimationFrame(updateProgress);
-  };
-
-  const cancelHold = () => {
-    setIsHolding(false);
-    setHoldProgress(0);
-    if (animFrameRef.current) {
-      cancelAnimationFrame(animFrameRef.current);
-    }
-    if (holdTimerRef.current) {
-      clearTimeout(holdTimerRef.current);
-    }
   };
 
   return (
@@ -74,36 +35,25 @@ export default function WelcomeScreen({ onStart }) {
         </p>
       </div>
 
-      {/* Hold to Start Button Container */}
-      <div
-        className="welcome-hold-button"
-        onMouseDown={startHold}
-        onMouseUp={cancelHold}
-        onMouseLeave={cancelHold}
-        onTouchStart={startHold}
-        onTouchEnd={cancelHold}
-        onTouchCancel={cancelHold}
+      {/* Click to Start Button */}
+      <button
+        type="button"
+        className="primary-continue-btn"
+        onClick={handleStart}
         style={{
-          userSelect: 'none',
-          WebkitUserSelect: 'none',
-          WebkitTouchCallout: 'none'
+          height: 60,
+          borderRadius: 'var(--radius-full)',
+          background: '#043CA0',
+          borderColor: '#043CA0',
+          fontSize: 16,
+          fontWeight: 800,
+          boxShadow: '0 8px 20px rgba(4, 60, 160, 0.3)',
+          cursor: 'pointer'
         }}
       >
-        {/* Animated Progress Fill Background */}
-        <div
-          className="hold-progress-bar"
-          style={{
-            width: `${holdProgress}%`,
-            transition: isHolding ? 'none' : 'width 0.25s ease-out'
-          }}
-        />
-
-        <div className="hold-button-content" style={{ justifyContent: 'center' }}>
-          <span className="hold-label-text">
-            {isHolding ? 'Hold to Begin...' : 'Hold to Start'}
-          </span>
-        </div>
-      </div>
+        <span>Start Assessment</span>
+        <ArrowRight size={20} strokeWidth={2.5} />
+      </button>
 
       {/* Footer Subtext */}
       <div style={{ textAlign: 'center', fontSize: 11, fontWeight: 800, color: '#021744', paddingTop: 12 }}>

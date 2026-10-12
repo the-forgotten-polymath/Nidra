@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Minus, Plus, Moon } from 'lucide-react';
 import ScreenHeaderBlock from '../components/ScreenHeaderBlock';
 import NumericStepperField from '../components/NumericStepperField';
 
 export default function Screen5SleepDuration({ store, updateField, isDeveloperMode }) {
-  const [focusedField, setFocusedField] = useState('bedtime');
+  const [focusedField, setFocusedField] = useState('timeToFallAsleep');
 
   return (
     <div className="screen-scroll-container">
@@ -51,80 +50,6 @@ export default function Screen5SleepDuration({ store, updateField, isDeveloperMo
           isFocused={focusedField === 'awakenings'}
           onFocus={() => setFocusedField('awakenings')}
         />
-
-        {/* Q3: Sleep duration hours (starts from 0) */}
-        <div
-          style={{ display: 'flex', flexDirection: 'column', gap: 10 }}
-          onClick={() => setFocusedField('sleepDuration')}
-        >
-          <div className="input-label">
-            How many hours do you usually sleep each night?
-          </div>
-
-          <div
-            className="stepper-card"
-            style={{
-              border: focusedField === 'sleepDuration' ? '2px solid var(--color-outline)' : '1.5px solid rgba(199, 190, 219, 0.45)',
-              transition: 'border 0.2s ease, box-shadow 0.2s ease'
-            }}
-          >
-            <button
-              type="button"
-              className="stepper-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setFocusedField('sleepDuration');
-                updateField('sleepDurationHours', Math.max(0, Math.round((store.sleepDurationHours || 0) - 1)));
-              }}
-              disabled={(store.sleepDurationHours || 0) <= 0}
-              aria-label="Decrease hours"
-            >
-              <Minus size={16} strokeWidth={2.5} />
-            </button>
-
-            <div className="stepper-value-display">
-              <span className="stepper-num" style={{ color: 'var(--color-text-dark)' }}>
-                {Math.round(store.sleepDurationHours || 0)}
-              </span>
-              <span className="stepper-unit">hours</span>
-            </div>
-
-            <button
-              type="button"
-              className="stepper-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setFocusedField('sleepDuration');
-                updateField('sleepDurationHours', Math.min(16, Math.round((store.sleepDurationHours || 0) + 1)));
-              }}
-              aria-label="Increase hours"
-            >
-              <Plus size={16} strokeWidth={2.5} />
-            </button>
-          </div>
-
-          {focusedField === 'sleepDuration' && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 4, animation: 'fadeIn 0.2s ease' }}>
-              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--color-text-muted)' }}>Quick pick:</span>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                {[0, 4, 5, 6, 7, 8, 9, 10].map(h => (
-                  <button
-                    key={h}
-                    type="button"
-                    className={`quick-chip ${store.sleepDurationHours === h ? 'selected' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setFocusedField('sleepDuration');
-                      updateField('sleepDurationHours', h);
-                    }}
-                  >
-                    {h} hrs
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
