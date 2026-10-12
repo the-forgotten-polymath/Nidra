@@ -162,20 +162,20 @@ export default function ThankYouScreen({ store, onNewAssessment }) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 10 }}>
           {/* OSA */}
           <div style={{ background: evaluation.osaEval.isPositive ? '#FFFBEB' : '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 12, padding: 10, textAlign: 'center' }}>
-            <div style={{ fontSize: 10, fontWeight: 800, color: '#64748B' }}>OSA Risk</div>
+            <div style={{ fontSize: 10, fontWeight: 800, color: '#64748B' }}>OSA Possibility</div>
             <div style={{ fontSize: 12, fontWeight: 900, color: evaluation.osaEval.isPositive ? '#B45309' : '#059669', marginTop: 4 }}>
-              {evaluation.osaEval.scoreRatio !== '—' ? evaluation.osaEval.category : 'Unlikely'}
+              {evaluation.osaEval.category}
             </div>
-            {evaluation.osaEval.scoreRatio !== '—' && (
-              <div style={{ fontSize: 10, fontWeight: 700, color: '#64748B', marginTop: 2 }}>({evaluation.osaEval.scoreRatio})</div>
-            )}
+            <div style={{ fontSize: 10, fontWeight: 700, color: '#64748B', marginTop: 2 }}>
+              ({evaluation.osaEval.scoreRatio} positive)
+            </div>
           </div>
 
           {/* RLS */}
-          <div style={{ background: evaluation.rlsEval.isPositive ? '#FFFBEB' : '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 12, padding: 10, textAlign: 'center' }}>
+          <div style={{ background: evaluation.rlsEval.isPositive ? '#EFF6FF' : '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: 12, padding: 10, textAlign: 'center' }}>
             <div style={{ fontSize: 10, fontWeight: 800, color: '#64748B' }}>Restless Legs</div>
-            <div style={{ fontSize: 12, fontWeight: 900, color: evaluation.rlsEval.isPositive ? '#B45309' : '#059669', marginTop: 4 }}>
-              {evaluation.rlsEval.isPositive ? 'Possible' : 'None'}
+            <div style={{ fontSize: 12, fontWeight: 900, color: evaluation.rlsEval.isPositive ? '#1D4ED8' : '#059669', marginTop: 4 }}>
+              {evaluation.rlsEval.isPositive ? 'Likely (4/4)' : 'Unlikely'}
             </div>
           </div>
 
@@ -185,6 +185,44 @@ export default function ThankYouScreen({ store, onNewAssessment }) {
             <div style={{ fontSize: 12, fontWeight: 900, color: evaluation.insomniaEval.isPositive ? '#B45309' : '#059669', marginTop: 4 }}>
               {evaluation.insomniaEval.isPositive ? 'Possible' : 'Low'}
             </div>
+          </div>
+        </div>
+
+        {/* OSA Patient Notice with Study Footnote */}
+        <div style={{
+          marginTop: 14,
+          padding: '12px 14px',
+          borderRadius: 14,
+          background: evaluation.osaEval.totalPositive >= 3 ? '#FEF2F2' : (evaluation.osaEval.totalPositive === 2 ? '#FFFBEB' : '#F8FAFC'),
+          border: `1.5px solid ${evaluation.osaEval.totalPositive >= 3 ? '#FCA5A5' : (evaluation.osaEval.totalPositive === 2 ? '#FDE68A' : '#E2E8F0')}`
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 4, flexWrap: 'wrap', gap: 6 }}>
+            <span style={{ fontSize: 11, fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+              Sleep Apnea (OSA) Evaluation
+            </span>
+            {evaluation.osaEval.probabilityPercent ? (
+              <span style={{
+                fontSize: 11,
+                fontWeight: 800,
+                background: evaluation.osaEval.totalPositive >= 3 ? '#FEE2E2' : '#FEF3C7',
+                color: evaluation.osaEval.totalPositive >= 3 ? '#991B1B' : '#92400E',
+                padding: '2px 8px',
+                borderRadius: 10
+              }}>
+                {evaluation.osaEval.probabilityPercent}% Probability
+              </span>
+            ) : null}
+          </div>
+          <div style={{
+            fontSize: 14,
+            fontWeight: 900,
+            color: evaluation.osaEval.totalPositive >= 3 ? '#991B1B' : (evaluation.osaEval.totalPositive === 2 ? '#92400E' : '#0F172A'),
+            marginBottom: 6
+          }}>
+            "{evaluation.osaEval.patientMessage}"
+          </div>
+          <div style={{ fontSize: 10, fontWeight: 600, color: '#64748B', fontStyle: 'italic', lineHeight: 1.4 }}>
+            ℹ️ {evaluation.osaEval.studyFootnote}
           </div>
         </div>
       </div>

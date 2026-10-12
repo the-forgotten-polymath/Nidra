@@ -1,6 +1,17 @@
 import React from 'react';
 import { Minus, Plus } from 'lucide-react';
 
+function formatUnit(u, val) {
+  if (!u) return '';
+  const lower = u.toLowerCase();
+  if (lower.startsWith('year')) return val === 1 ? 'year' : 'years';
+  if (lower.startsWith('month')) return val === 1 ? 'month' : 'months';
+  if (lower.startsWith('day')) return val === 1 ? 'day' : 'days';
+  if (lower.startsWith('hour')) return val === 1 ? 'hour' : 'hours';
+  if (val === 1 && u.endsWith('s')) return u.slice(0, -1);
+  return u;
+}
+
 export default function NumericStepperField({
   title,
   value,
@@ -12,7 +23,8 @@ export default function NumericStepperField({
   defaultValueIfZero = 10,
   quickPicks = [],
   isFocused = true,
-  onFocus
+  onFocus,
+  allowZero = false
 }) {
   const handleDecrement = () => {
     onFocus?.();
@@ -22,12 +34,15 @@ export default function NumericStepperField({
 
   const handleIncrement = () => {
     onFocus?.();
-    if (value === 0 && defaultValueIfZero > 0 && min === 0) {
+    if (!allowZero && value === 0 && defaultValueIfZero > 0 && min === 0) {
       onChange(defaultValueIfZero);
     } else if (value < max) {
       onChange(Math.min(max, value + step));
     }
   };
+
+  const showZeroValue = allowZero && (value === 0 || value === '0');
+  const hasDisplayValue = value > 0 || showZeroValue;
 
   return (
     <div
@@ -59,10 +74,14 @@ export default function NumericStepperField({
 
         {/* Display */}
         <div className="stepper-value-display">
-          <span className="stepper-num" style={{ color: value > 0 ? 'var(--color-text-dark)' : 'var(--color-text-light)' }}>
-            {value > 0 ? value : '--'}
+          <span className="stepper-num" style={{ color: hasDisplayValue ? 'var(--color-text-dark)' : 'var(--color-text-light)' }}>
+            {hasDisplayValue ? value : '--'}
           </span>
-          {unit && <span className="stepper-unit">{unit}</span>}
+          {unit && (
+            <span className="stepper-unit">
+              {formatUnit(unit, value)}
+            </span>
+          )}
         </div>
 
         {/* Plus Button */}
@@ -88,7 +107,8 @@ export default function NumericStepperField({
             {quickPicks.map((pick, idx) => {
               const isObj = typeof pick === 'object' && pick !== null;
               const pickVal = isObj ? pick.value : pick;
-              const pickLabel = isObj ? pick.label : `${pick}${unit ? ' ' + unit : ''}`;
+              const formattedUnit = unit ? formatUnit(unit, pickVal) : '';
+              const pickLabel = isObj ? pick.label : `${pickVal}${formattedUnit ? ' ' + formattedUnit : ''}`;
               const isSelected = isObj ? (pick.isIncrement ? false : value === pickVal) : value === pickVal;
 
               return (

@@ -27,13 +27,13 @@ export default function Screen12LegSensations({ store, updateField, isDeveloperM
           }}
         />
 
-        {/* If Yes: Evening worsening */}
+        {/* Q2: Increases on lying down or resting */}
         {store.legsUncomfortableResting === true && (
           <div className="anim-slide-leading">
             <YesNoPicker
-              question="Does this sensation gets worse in evening or night ? "
-              value={store.legsWorseEvening}
-              onChange={(val) => updateField('legsWorseEvening', val)}
+              question="does this sensation increases on lying down or resting ?"
+              value={store.legsNoOtherReason}
+              onChange={(val) => updateField('legsNoOtherReason', val)}
             />
           </div>
         )}

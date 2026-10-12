@@ -263,16 +263,16 @@ export function useIntakeStore() {
     if (store.isDeveloperMode) return true;
     if (store.legsUncomfortableResting === null) return false;
     if (store.legsUncomfortableResting === true) {
-      return store.legsWorseEvening !== null;
+      return store.legsNoOtherReason !== null;
     }
     return true;
-  }, [store.isDeveloperMode, store.legsUncomfortableResting, store.legsWorseEvening]);
+  }, [store.isDeveloperMode, store.legsUncomfortableResting, store.legsNoOtherReason]);
 
   const isScreen15Valid = useMemo(() => {
     if (store.isDeveloperMode) return true;
     if (store.legsUncomfortableResting === false) return true;
-    return store.legsMovingHelps !== null && store.legsNoOtherReason !== null;
-  }, [store.isDeveloperMode, store.legsUncomfortableResting, store.legsMovingHelps, store.legsNoOtherReason]);
+    return store.legsMovingHelps !== null && store.legsWorseEvening !== null;
+  }, [store.isDeveloperMode, store.legsUncomfortableResting, store.legsMovingHelps, store.legsWorseEvening]);
 
   const isScreen16Valid = useMemo(() => {
     if (store.isDeveloperMode) return true;

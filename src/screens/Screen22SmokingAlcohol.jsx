@@ -23,7 +23,7 @@ export default function Screen22SmokingAlcohol({ store, updateField, isDeveloper
         {/* Smoking Stepper */}
         <NumericStepperField
           title="How many cigarettes or beedis do you usually smoke each day?"
-          value={store.cigarettesPerDay}
+          value={store.cigarettesPerDay ?? 0}
           onChange={(val) => updateField('cigarettesPerDay', val)}
           unit="/ day"
           min={0}
@@ -31,6 +31,7 @@ export default function Screen22SmokingAlcohol({ store, updateField, isDeveloper
           step={1}
           defaultValueIfZero={0}
           quickPicks={[0, 2, 5, 10]}
+          allowZero={true}
         />
 
         {/* Alcohol Frequency Selector */}

@@ -13,27 +13,27 @@ export default function Screen14LegSensations({ store, updateField, isDeveloperM
       />
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-        {/* Q1: Urge to move legs */}
+        {/* Q1: Urge to move legs or uncomfortable sensation */}
         <YesNoPicker
-          question="Do you feel an urge to move your legs, or an uncomfortable feeling in them, when lying down or resting?"
+          question="Do you feel an urge to move your legs or an uncomfortable sensation in them?"
           value={store.legsUncomfortableResting}
           onChange={(val) => {
             updateField('legsUncomfortableResting', val);
             if (val === false) {
-              updateField('legsWorseEvening', false);
-              updateField('legsMovingHelps', false);
               updateField('legsNoOtherReason', false);
+              updateField('legsMovingHelps', false);
+              updateField('legsWorseEvening', false);
             }
           }}
         />
 
-        {/* If Yes: Evening worsening */}
+        {/* Q2: Increases on lying down or resting */}
         {store.legsUncomfortableResting === true && (
           <div className="anim-slide-leading">
             <YesNoPicker
-              question="Is it worse in the evening or at night?"
-              value={store.legsWorseEvening}
-              onChange={(val) => updateField('legsWorseEvening', val)}
+              question="does this sensation increases on lying down or resting ?"
+              value={store.legsNoOtherReason}
+              onChange={(val) => updateField('legsNoOtherReason', val)}
             />
           </div>
         )}

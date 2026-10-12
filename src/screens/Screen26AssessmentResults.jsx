@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Pencil, CheckCircle2, ArrowRight, Save, X, Plus, Minus, User, Bed, Wind, Activity, Sparkles } from 'lucide-react';
+import { evaluateOSA } from '../utils/clinicalRules';
 
 export default function Screen26AssessmentResults({ 
   store, 
@@ -16,6 +17,11 @@ export default function Screen26AssessmentResults({
 }) {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [editingSection, setEditingSection] = useState(null); // 'personal' | 'sleep' | 'breathing' | 'body' | 'lifestyle' | null
+
+  // OSA Clinical Evaluation (Indian Population Study)
+  const osaEval = React.useMemo(() => {
+    return evaluateOSA(store || {});
+  }, [store]);
 
   // Hypertension Flag: Systolic > 140 AND Diastolic > 90 AND History of Hypertension
   const isHypertensive = React.useMemo(() => {
@@ -419,6 +425,50 @@ export default function Screen26AssessmentResults({
               </div>
             </div>
           )}
+
+          {/* OSA Diagnostic Assessment (Indian Study Criteria) */}
+          <div style={{
+            marginTop: 14,
+            padding: '12px 14px',
+            borderRadius: 14,
+            background: osaEval.totalPositive >= 3 ? '#FEF2F2' : (osaEval.totalPositive === 2 ? '#FFFBEB' : '#F8FAFC'),
+            border: `1.5px solid ${osaEval.totalPositive >= 3 ? '#FCA5A5' : (osaEval.totalPositive === 2 ? '#FDE68A' : '#E2E8F0')}`,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 6
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 6 }}>
+              <span style={{ 
+                fontSize: 11, 
+                fontWeight: 800, 
+                textTransform: 'uppercase', 
+                letterSpacing: '0.5px',
+                color: osaEval.totalPositive >= 3 ? '#991B1B' : (osaEval.totalPositive === 2 ? '#92400E' : '#475569') 
+              }}>
+                Sleep Apnea (OSA) Possibility
+              </span>
+              <span style={{ 
+                fontSize: 11, 
+                fontWeight: 800, 
+                background: osaEval.totalPositive >= 3 ? '#FEE2E2' : (osaEval.totalPositive === 2 ? '#FEF3C7' : '#E2E8F0'), 
+                color: osaEval.totalPositive >= 3 ? '#991B1B' : (osaEval.totalPositive === 2 ? '#92400E' : '#475569'), 
+                padding: '2px 8px', 
+                borderRadius: 10 
+              }}>
+                {osaEval.scoreRatio} positive {osaEval.probabilityPercent ? `(${osaEval.probabilityPercent}%)` : ''}
+              </span>
+            </div>
+            <div style={{ 
+              fontSize: 14, 
+              fontWeight: 900, 
+              color: osaEval.totalPositive >= 3 ? '#991B1B' : (osaEval.totalPositive === 2 ? '#92400E' : '#0F172A') 
+            }}>
+              "{osaEval.patientMessage}"
+            </div>
+            <div style={{ fontSize: 11, fontWeight: 600, color: '#64748B', fontStyle: 'italic', marginTop: 2 }}>
+              ℹ️ {osaEval.studyFootnote}
+            </div>
+          </div>
         </div>
 
         {/* CARD 4: Body Measurements & Vitals */}
@@ -829,10 +879,10 @@ export default function Screen26AssessmentResults({
           {editingSection === 'legs' ? (
             <div style={{ display: 'flex', flexDirection: 'column', gap: 10, background: '#F8FAFC', padding: 12, borderRadius: 14, border: '1px solid #E2E8F0' }}>
               {[
-                { key: 'legsUncomfortableResting', label: 'Urge to move legs or uncomfortable sensation?' },
-                { key: 'legsWorseEvening', label: 'Worse in evening or night?' },
-                { key: 'legsMovingHelps', label: 'Better while stretching or walking?' },
-                { key: 'legsNoOtherReason', label: 'Increases on lying down or resting?' }
+                { key: 'legsUncomfortableResting', label: '1. Urge to move legs or uncomfortable sensation?' },
+                { key: 'legsNoOtherReason', label: '2. Sensation increases on lying down or resting?' },
+                { key: 'legsMovingHelps', label: '3. Better till the time you stretch or walk?' },
+                { key: 'legsWorseEvening', label: '4. Sensation gets worse in evening or night?' }
               ].map(item => (
                 <div key={item.key} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: '#FFF', padding: '8px 12px', borderRadius: 10, border: '1px solid #CBD5E1' }}>
                   <span style={{ fontSize: 12, fontWeight: 700, color: '#021744' }}>{item.label}</span>
@@ -884,20 +934,20 @@ export default function Screen26AssessmentResults({
           ) : (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
               <div style={{ background: '#F8FAFC', padding: 10, borderRadius: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>Uncomfortable Urge</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>1. Uncomfortable Urge</span>
                 <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsUncomfortableResting ? 'Yes' : store.legsUncomfortableResting === false ? 'No' : '--'}</span>
               </div>
               <div style={{ background: '#F8FAFC', padding: 10, borderRadius: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>Worse Evening/Night</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsWorseEvening ? 'Yes' : store.legsWorseEvening === false ? 'No' : '--'}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>2. Increases on Rest</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsNoOtherReason ? 'Yes' : store.legsNoOtherReason === false ? 'No' : '--'}</span>
               </div>
               <div style={{ background: '#F8FAFC', padding: 10, borderRadius: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>Moving Helps</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>3. Stretch/Walk Helps</span>
                 <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsMovingHelps ? 'Yes' : store.legsMovingHelps === false ? 'No' : '--'}</span>
               </div>
               <div style={{ background: '#F8FAFC', padding: 10, borderRadius: 12 }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>Increases on Rest</span>
-                <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsNoOtherReason ? 'Yes' : store.legsNoOtherReason === false ? 'No' : '--'}</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: '#6A789C', display: 'block' }}>4. Worse Evening/Night</span>
+                <span style={{ fontSize: 13, fontWeight: 800, color: '#021744' }}>{store.legsWorseEvening ? 'Yes' : store.legsWorseEvening === false ? 'No' : '--'}</span>
               </div>
             </div>
           )}
